@@ -6,7 +6,7 @@
     "name": "com.microchip.mplabx.project.dspic33c-power-pwm-phase-shift",
     "version": "1.0.0",
     "displayName": "dsPIC33C PWM Configuration: Phase Shifted PWM Output",
-    "projectName": "dspic33c-power-pwm-",
+    "projectName": "dspic33c-power-pwm-phase-shift",
     "shortDescription": "Phase Shifted PWM Output Configuration Example for dsPIC33C devices",
 	"ide": {
 		"name": "MPLABX",
