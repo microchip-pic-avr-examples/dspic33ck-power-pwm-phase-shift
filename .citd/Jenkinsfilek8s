@@ -10,20 +10,22 @@ pipeline {
 
 	environment {
 	    NOTIFICATION_EMAIL = '1f1319de.microchip.com@amer.teams.ms'	
-		//Branch to be deployed, if multiple branches use comma separated string
-		DEPLOY_BRANCH = "${env.BRANCH_NAME}"
-		//This is the BitBucket repo URL which we want to deploy
-		BITBUCKET_URL = 'https://bitbucket.microchip.com/scm/mcu16ce/dspic33c-power-pwm-complementary.git'
-		BITBUCKET_CREDENTIAL_ID = 'BITBUCKET_MCU16CE_TOKEN'
-        //URL of actual production deployment		
+		//This is the BitBucket source repo URL to be deployed
+		BITBUCKET_SOURCE_URL = 'https://bitbucket.microchip.com/scm/mcu16ce/dspic33ck-power-pwm-complementary.git'
+		BITBUCKET_CREDENTIAL_ID = 'BITBUCKET_INTERNAL_TOKEN'
 		GITHUB_PRODUCTION_DEPLOY_URL ='https://github.com/microchip-pic-avr-examples'
-		//URL for test deployment
 		GITHUB_TEST_DEPLOY_URL ='https://github.com/mchpTestArea'
-		GITHUB_URL = "${env.BRANCH_NAME == 'master' ? env.GITHUB_PRODUCTION_DEPLOY_URL : env.GITHUB_TEST_DEPLOY_URL}"
-		GITHUB_CREDENTIAL_ID = 'GITHUB_PIC_AVR_TEST_TOKEN'
-		//Files or folders to be excluded from deployment
-		DEPLOY_EXCLUDE_FOLDER = 'mchp_private'
-		CHANGE_LOG_PATH = 'deploy_sandbox/changelog.md'
+		//Selects the deployment URL(production or test) based on the merge target branch, selects "microchip-pic-avr-examples" if target branch is "master" , if target branch is "test_deploy" selects "mchpTestArea" else null
+		GITHUB_URL = getGitHubUrl("${GITHUB_PRODUCTION_DEPLOY_URL}","${GITHUB_TEST_DEPLOY_URL}")
+		GITHUB_PRODUCTION_DEPLOY_CREDENTIAL_ID ='GITHUB_MICROCHIP_PIC_AVR_EXAMPLES_TOKEN'
+		GITHUB_TEST_DEPLOY_CREDENTIAL_ID ='GITHUB_PIC_AVR_TEST_TOKEN'
+		//Gets the Github credential id based on the deployment organization
+	    GITHUB_CREDENTIAL_ID = getGitHubCredentialId("${GITHUB_URL}","${GITHUB_PRODUCTION_DEPLOY_URL}","${GITHUB_TEST_DEPLOY_URL}","${GITHUB_PRODUCTION_DEPLOY_CREDENTIAL_ID}","${GITHUB_TEST_DEPLOY_CREDENTIAL_ID}")
+		//Files or folders to be excluded from deployment, if multiple files or folders use comma separator
+		DEPLOY_EXCLUDE_FOLDER_FILE_LIST = 'mchp_private'
+		//Branch(s) to be deployed, if multiple branches use comma separator. ${env.BRANCH_NAME} is the target branch of the PR.
+		DEPLOY_BRANCH_LIST = "${env.BRANCH_NAME}"
+		CHANGE_LOG_PATH = 'changelog.md'
 		SOURCE_PROJECT_META_DATA = '.main-meta/main.json'
 		DEPLOY_TOOL_URL = 'https://bitbucket.microchip.com/scm/citd/tool-github-deploy.git'
 	}
@@ -40,7 +42,7 @@ pipeline {
                 checkout scm
             }
         }
-
+		
         stage('Build') {
             steps {
                 script {
@@ -49,7 +51,7 @@ pipeline {
                }
             }
         }
-	   
+		
 	    // Cloning the tool used for GitHub deployment
 	   	stage('GitHub tool clone'){
 			when {
@@ -74,7 +76,7 @@ pipeline {
                     anyOf {
                         allOf {
                             not { changeRequest() }
-                            anyOf {branch 'master'; branch 'test_deploy';}
+                            anyOf {branch 'master';}
                         }
                     }
             }
@@ -83,7 +85,7 @@ pipeline {
                     def jsonObj = readJsonObject();
                     
                     withCredentials([usernamePassword(credentialsId: "${env.BITBUCKET_CREDENTIAL_ID}", passwordVariable: 'PASS', usernameVariable: 'USER_NAME')]) {
-                        execute("python tool-github-deploy/tool-github-deploy/tool-github-deploy.py -bto=true -rpn=\"${jsonObj.content.projectName}\" -bid=$USER_NAME -bpat=$PASS -bpn=MCU16CE -btv=\"${jsonObj.content.version}\" -bch=${env.GIT_COMMIT} -btd=\"v${jsonObj.content.version}\"")
+                        execute("python tool-github-deploy/tool-github-deploy/tool-github-deploy.py -bto=true -rpn=\"${jsonObj.content.projectName}\" -bid=$USER_NAME -bpat=$PASS -bpn=MCU16CE -btv=\"${jsonObj.content.version}\" -bch=${env.GIT_COMMIT} -btd=\"${jsonObj.content.version}\"")
                     }
                 }
             }
@@ -105,15 +107,14 @@ pipeline {
                     
                     String [] topics = jsonObj.content.keywords
                     def asString = topics.join(", ")
-                    asString = asString.replace("\n", "").replace(" ", "").replace("\t", "").replace("\r", "")
 					Boolean visibility =  true
-					if(env.GITHUB_URL.contains('microchip-pic-avr-examples'))
+					if(env.GITHUB_URL == env.GITHUB_PRODUCTION_DEPLOY_URL)
 					{
 					   visibility = false
 					}
                     
                     withCredentials([usernamePassword(credentialsId: "${env.GITHUB_CREDENTIAL_ID}", passwordVariable: 'PASS', usernameVariable: 'USER_NAME')]) {
-                        execute("python tool-github-deploy/tool-github-deploy/tool-github-deploy.py -rpo=true -gpat=$PASS -rporg=${env.GITHUB_URL} -rpn=${jsonObj.content.projectName} -rpd=\"${jsonObj.content.shortDescription}\" -rpt=${asString} -rpp=${visibility}")
+                        execute("python tool-github-deploy/tool-github-deploy/tool-github-deploy.py -rpo=true -gpat=$PASS -rporg=${env.GITHUB_URL} -rpn=${jsonObj.content.projectName} -rpd=\"${jsonObj.content.shortDescription}\" -rpt=\"${asString}\" -rpp=${visibility}")
                     }
                 }
             }
@@ -136,7 +137,7 @@ pipeline {
                     gitHubUrl = gitHubUrl.replace(" ", "").replace("\n", "")
                     
                     withCredentials([usernamePassword(credentialsId: "${env.GITHUB_CREDENTIAL_ID}", passwordVariable: 'PASS', usernameVariable: 'USER_NAME')]) {
-                        execute("python tool-github-deploy/tool-github-deploy/tool-github-deploy.py -deploy=true -gpat=$PASS -dgid=$USER_NAME -dburl=${env.BITBUCKET_URL} -dgurl=${gitHubUrl}  -dbranch=${env.DEPLOY_BRANCH} -def=${env.DEPLOY_EXCLUDE_FOLDER}")
+                        execute("python tool-github-deploy/tool-github-deploy/tool-github-deploy.py -deploy=true -gpat=$PASS -dgid=$USER_NAME -dburl=${env.BITBUCKET_SOURCE_URL} -dgurl=${gitHubUrl}  -dbranch=${env.DEPLOY_BRANCH_LIST} -def=${env.DEPLOY_EXCLUDE_FOLDER_FILE_LIST}")
                     }
                 }
             }
@@ -157,11 +158,39 @@ pipeline {
                     def jsonObj = readJsonObject();
                     
                     withCredentials([usernamePassword(credentialsId: "${env.GITHUB_CREDENTIAL_ID}", passwordVariable: 'PASS', usernameVariable: 'USER_NAME')]) {
-                        execute("python tool-github-deploy/tool-github-deploy/tool-github-deploy.py -rlo=true -gpat=$PASS -rpn=\"${jsonObj.content.projectName}\" -rltv=\"v${jsonObj.content.version}\" -rltt=\"${jsonObj.content.version}\" -rlnp=${env.CHANGE_LOG_PATH}")
+                        execute("python tool-github-deploy/tool-github-deploy/tool-github-deploy.py -rlo=true -gpat=$PASS -rporg=${env.GITHUB_URL} -rpn=\"${jsonObj.content.projectName}\" -rltv=\"${jsonObj.content.version}\" -rltt=\"${jsonObj.content.version}\" -rlnp=${env.CHANGE_LOG_PATH}")
                     }
                 }
             }
         }
+		
+		//Deploying the Github content to portal
+		stage('Portal-Deploy') {
+			when {
+				allOf {
+                    not { changeRequest() }
+                    anyOf {branch 'master';}
+                }
+			}
+			steps {
+				script {
+					def jsonObj = readJsonObject();			
+					def version = jsonObj.content.version
+					def project = jsonObj.content.projectName
+					
+                    String[] splitPreTag = "${env.GITHUB_URL}".split("/")
+                    def gitHubOrg = (splitPreTag[splitPreTag.size() - 1])
+
+					def cmdArgs = "'{\"repoOwnerName\":\"$gitHubOrg\",\"repoName\":\"$project\",\"tagName\":\"$version\"}'"
+					cmdArgs = cmdArgs.replaceAll("\"","\\\\\"")						
+					
+					execute("git clone https://bitbucket.microchip.com/scm/portal/bundles.git")
+					execute("cd bundles && chmod 755 ./portal-client-cli-linux")
+					execute("git clone https://bitbucket.microchip.com/scm/citd/tool-portal-client-launcher.git")
+					execute("cd tool-portal-client-launcher && node portalLauncher.js -app=../bundles/portal-client-cli-linux -cmd=\"uploadGitHub ${cmdArgs}\"")
+				}
+			}
+		}
         
       }
 
@@ -169,12 +198,12 @@ pipeline {
         success{
             script {
                 if (!"${env.CHANGE_AUTHOR_EMAIL}".equalsIgnoreCase("null")) {
-				    //archiveArtifacts artifacts: "tool-mplabx-c-build/output/**", fingerprint: true
+				    archiveArtifacts artifacts: "tool-mplabx-c-build/output/**", fingerprint: true
                     mail to: "${env.CHANGE_AUTHOR_EMAIL}, ${env.NOTIFICATION_EMAIL}",
                     subject: "Successful Pipeline: ${currentBuild.fullDisplayName}",
                     body: "Something is right with ${env.BUILD_URL}"
                 } else {
-				    //archiveArtifacts artifacts: "tool-mplabx-c-build/output/**", fingerprint: true
+				    archiveArtifacts artifacts: "tool-mplabx-c-build/output/**", fingerprint: true
                     mail to: "${env.NOTIFICATION_EMAIL}",
                     subject: "Successful Pipeline: ${currentBuild.fullDisplayName}",
                     body: "Something is right with ${env.BUILD_URL}"
@@ -184,12 +213,12 @@ pipeline {
         failure {
             script {
                 if (!"${env.CHANGE_AUTHOR_EMAIL}".equalsIgnoreCase("null")) {
-				    //archiveArtifacts artifacts: "tool-mplabx-c-build/output/**", fingerprint: true
+				    archiveArtifacts artifacts: "tool-mplabx-c-build/output/**", fingerprint: true
                     mail to: "${env.CHANGE_AUTHOR_EMAIL}, ${env.NOTIFICATION_EMAIL}",
                     subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
                     body: "Pipeline failure. ${env.BUILD_URL}"
                 } else {
-				    //archiveArtifacts artifacts: "tool-mplabx-c-build/output/**", fingerprint: true
+				    archiveArtifacts artifacts: "tool-mplabx-c-build/output/**", fingerprint: true
                     mail to: "${env.NOTIFICATION_EMAIL}",
                     subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
                     body: "Pipeline failure. ${env.BUILD_URL}"
@@ -210,4 +239,25 @@ def execute(String command) {
 String readJsonObject() {
     def jsonObj  = readJSON interpolate: true, file: "${env.SOURCE_PROJECT_META_DATA}"
     return jsonObj
+}
+
+def getGitHubUrl(String productionUrl, String testDeployUrl) {
+    String branchName = "${env.BRANCH_NAME}";
+    if(branchName == 'master') {
+        return productionUrl;
+    } else if(branchName == 'test_deploy') {
+        return testDeployUrl;
+    } else {
+        return null
+    }
+}
+
+def getGitHubCredentialId(String deployUrl, String productionDeployUrl, String testDeployUrl, String githubProductionDeployCredential, String githubTestDeployCredential) {    
+    if(deployUrl == productionDeployUrl) {
+        return githubProductionDeployCredential;
+    } else if(deployUrl == testDeployUrl) {
+        return githubTestDeployCredential;
+    } else {
+        return null
+    }
 }
