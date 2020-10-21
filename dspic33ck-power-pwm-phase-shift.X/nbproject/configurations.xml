@@ -67,7 +67,6 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
-    <Elem>../../dspic33ck-power-pwm-adc-trigger/dspic33c-power-pwm-adc-trigger/dspic33ck-power-pwm-adc-trigger.X/sources/drivers</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -77,7 +76,7 @@
         <targetDevice>dsPIC33CK256MP506</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>RealICEPlatformTool</platformTool>
+        <platformTool>noID</platformTool>
         <languageToolchain>XC16</languageToolchain>
         <languageToolchainVersion>1.60</languageToolchainVersion>
         <platform>3</platform>

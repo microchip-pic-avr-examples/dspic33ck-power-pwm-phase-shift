@@ -14,7 +14,6 @@
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>.</sourceRootElem>
-                <sourceRootElem>../../dspic33ck-power-pwm-adc-trigger/dspic33c-power-pwm-adc-trigger/dspic33ck-power-pwm-adc-trigger.X/sources/drivers</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>
