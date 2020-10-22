@@ -49,7 +49,7 @@
 #endif
 
 #if defined (__MA330048_dsPIC33CK_DPPIM__)
-    #include "ma330048_R30_pinmap.h"
+    #include "ma330048_r30_pinmap.h"
 #elif defined (__MA330049_dsPIC33CH_DPPIM__)
     #include "MA330049_R10_pinmap.h"
 #else
