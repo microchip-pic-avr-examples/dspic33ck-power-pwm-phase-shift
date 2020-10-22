@@ -10,8 +10,9 @@ pipeline {
 
 	environment {
 	    NOTIFICATION_EMAIL = '1f1319de.microchip.com@amer.teams.ms'	
+		//Branch to be deployed, if multiple branches use comma separated string
 		//This is the BitBucket source repo URL to be deployed
-		BITBUCKET_SOURCE_URL = 'https://bitbucket.microchip.com/scm/mcu16ce/dspic33ck-power-pwm-complementary.git'
+		BITBUCKET_SOURCE_URL = 'https://bitbucket.microchip.com/scm/mcu16ce/dspic33ck-power-pwm-phase-shift.git'
 		BITBUCKET_CREDENTIAL_ID = 'BITBUCKET_INTERNAL_TOKEN'
 		GITHUB_PRODUCTION_DEPLOY_URL ='https://github.com/microchip-pic-avr-examples'
 		GITHUB_TEST_DEPLOY_URL ='https://github.com/mchpTestArea'
@@ -42,7 +43,7 @@ pipeline {
                 checkout scm
             }
         }
-		
+
         stage('Build') {
             steps {
                 script {
@@ -51,7 +52,7 @@ pipeline {
                }
             }
         }
-		
+	   
 	    // Cloning the tool used for GitHub deployment
 	   	stage('GitHub tool clone'){
 			when {
@@ -240,7 +241,6 @@ String readJsonObject() {
     def jsonObj  = readJSON interpolate: true, file: "${env.SOURCE_PROJECT_META_DATA}"
     return jsonObj
 }
-
 def getGitHubUrl(String productionUrl, String testDeployUrl) {
     String branchName = "${env.BRANCH_NAME}";
     if(branchName == 'master') {
@@ -251,7 +251,6 @@ def getGitHubUrl(String productionUrl, String testDeployUrl) {
         return null
     }
 }
-
 def getGitHubCredentialId(String deployUrl, String productionDeployUrl, String testDeployUrl, String githubProductionDeployCredential, String githubTestDeployCredential) {    
     if(deployUrl == productionDeployUrl) {
         return githubProductionDeployCredential;
