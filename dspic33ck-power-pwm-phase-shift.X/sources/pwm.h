@@ -46,11 +46,12 @@ extern "C" {
  * ********************************************************************************/    
 
 // PWM declarations for demo code
-#define MSTR_PWM_GENERATOR    1           // Specify index of PWM generator instance (1=PG1, 3=PG2, etc)
-#define SLAVE_PWM_GENERATOR   3   
+#define MOTHER_PWM_GENERATOR    1   // Specify index of leading PWM generator instance (1=PG1, 3=PG2, etc)
+#define CHILD_PWM_GENERATOR     3   // Specify index of synchronized PWM generator instance (1=PG1, 3=PG2, etc)
+    
 /* Declare global, user-defined PWM generator object */    
-extern volatile P33C_PWM_GENERATOR_t my_pg1;    // user-defined PWM generator object 
-extern volatile P33C_PWM_GENERATOR_t my_pg3;
+extern volatile struct P33C_PWM_GENERATOR_s* my_pg1; // pointer to user-defined leading PWM generator object 
+extern volatile struct P33C_PWM_GENERATOR_s* my_pg3; // pointer to user-defined synchronized PWM generator object 
 
 // Pre-compiler plausibility check if declared PWM generator index 
 // points to an existing/available PWM generator on the selected device
