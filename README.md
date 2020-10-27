@@ -2,7 +2,7 @@
  <article class="markdown-body entry-content p-3 p-md-6" itemprop="This needs to be locked down and 'never' changed">
  <p><a target="_blank" href="https://www.microchip.com" rel="nofollow"><img src="images/microchip.png" alt="MCHP" width="200";"></a></p>
 
-# dsPIC33C High-Resolution PWM Configuration IV
+# dsPIC33C High-Resolution PWM Configuration 4
 **Phase-Shifted PWM Waveform Generation**
 
 <p><center><a href="https://www.microchip.com/MA330048" rel="nofollow">
