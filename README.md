@@ -28,8 +28,8 @@ Code example for dsPIC33CK and dsPIC33CH devices showing a basic configuration o
 
 ## Software Used 
 - [MPLAB® X IDE v5.40](https://www.microchip.com/mplabx-ide-windows-installer)
-- [MPLAB XC16 Compiler v1.60](https://www.microchip.com/mplabxc16windows)
-- [Microchip Code Configurator v4.01](https://www.microchip.com/mplab/mplab-code-configurator)
+- [MPLAB® XC16 Compiler v1.60](https://www.microchip.com/mplabxc16windows)
+- [MPLAB® Code Configurator v4.01](https://www.microchip.com/mplab/mplab-code-configurator)
 
 ## Hardware Used
 - Digital Power Development Board, Part-No. [DM330029](https://www.microchip.com/DM330029)
