@@ -34,7 +34,7 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
-#include "drivers/p33c_pwm.h" // Include dsPIC33C standard PWM driver header file
+#include "common/p33c_pwm.h" // Include dsPIC33C standard PWM driver header file
 
 
 #ifdef	__cplusplus
