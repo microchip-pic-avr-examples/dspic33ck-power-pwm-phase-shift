@@ -82,8 +82,8 @@
  *   code line 49 and change the following PWM generator index number to
  *   configure another PWM generator than #1 or #3.
  *
- *     #define MSTR_PWM_GENERATOR     1 
- *     #define SLAVE_PWM_GENERATOR    3 
+ *     #define MOTHER_PWM_GENERATOR   1 
+ *     #define CHILD_PWM_GENERATOR    3 
  * 
  *   Valid numbers are 1-8 for PG1 through PG8 on dsPIC33CK and 
  *   1-4 for PG1 through PG4 on dsPIC33CH. Due to hardware limitations
@@ -98,7 +98,7 @@
  * Software:
  *  - MPLAB X IDE, v5.40
  *  - Microchip Code Configuration (MCC), v4.0.1
- *  - XC16 C-Compiler, v1.60
+ *  - XC16 C-Compiler, v1.50
  *  - dsPIC33CK-MP Device File Pack v1.4.102
  * 
  * ********************************************************************* */  
