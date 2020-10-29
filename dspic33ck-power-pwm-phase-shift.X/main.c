@@ -199,20 +199,20 @@ int main(void)
             while(SW_Read() == SW_PRESSED); 
 
             // Update PWM timing registers
-            if(my_pg1.pgHandle->PGxTRIGC.value == 5000)   // If trigger is set to 25% duty cycle
+            if(my_pg1->PGxTRIGC.value == 5000)   // If trigger is set to 25% duty cycle
             {
-                my_pg1.pgHandle->PGxTRIGC.value = 10000;  // Set the trigger at 50% duty cycle
+                my_pg1->PGxTRIGC.value = 10000;  // Set the trigger at 50% duty cycle
                 
             }
             else
             {
-                my_pg1.pgHandle->PGxTRIGC.value = 5000;   // Set the trigger at 25% duty cycle
+                my_pg1->PGxTRIGC.value = 5000;   // Set the trigger at 25% duty cycle
                 
             }
 
             // Set UPDATE bit of master PWM generator #1
             DBGPIN_Set();                   // Set debug pin as oscilloscope trigger
-            my_pg1.pgHandle->PGxSTAT.bits.UPDREQ = 1;  // Set Update Bit (apply new timing to PWM generator)
+            my_pg1->PGxSTAT.bits.UPDREQ = 1;  // Set Update Bit (apply new timing to PWM generator)
         }
         
     }
