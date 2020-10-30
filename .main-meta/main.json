@@ -4,10 +4,10 @@
    "content":{
       "metaDataVersion":"1.0.0",
       "name":"com.microchip.mplabx.project.dspic33ck-power-pwm-phase-shift",
-      "version":"x.x.x",
-      "displayName":"xxxxxxxxxxxxxxx",
+      "version":"1.0.0",
+      "displayName":"dsPIC33CK/CH-MP PWM Configuration: Phase Shifted PWM Output",
       "projectName":"dspic33ck-power-pwm-phase-shift",
-      "shortDescription":"xxxxxxxxxxxxxxx",
+      "shortDescription":"Phase Shifted PWM Output Configuration Example for dsPIC33CK-MP devices",
       "ide":{
          "name":"MPLABX",
          "semverRange":">=5.40.0"
@@ -17,8 +17,8 @@
          "semverRange":"^1.50.0"
       },
       "dfp":{
-         "name":"xxxxxxxxxxxxxxx",
-         "semverRange":">=x.x.x"
+         "name":"dsPIC33CK-MP_DFP",
+         "semverRange":"^1.4.102"
       },
 	  "configurator": {
          "name": "MCC",
@@ -30,17 +30,22 @@
          "content":{
             "metaDataVersion":"1.0.0",
             "category":"com.microchip.device",
-            "name":"xxxxxxxxxxxxxxx",
+            "name":"dsPIC33CK",
             "versionRange":"*"
          }
       },
       "peripherals":[
          "GPIO",
-         "UART"
+		 "PWM",
+         "Timer"
       ],
       "keywords":[
-         "GPIO",
-         "UART"
+         "dsc",
+         "dspic",
+		 "power",
+		 "power-conversion",
+		 "power-supply",
+		 "smps"
       ]
    }
 }
