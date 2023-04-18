@@ -2,7 +2,7 @@
    "metaDataVersion":"1.0.0",
    "category":"com.microchip.ide.project",
    "content":{
-      "metaDataVersion":"1.0.0",
+      "metaDataVersion":"1.3.0",
       "name":"com.microchip.mplabx.project.dspic33ck-power-pwm-phase-shift",
       "version":"1.0.0",
       "displayName":"dsPIC33CK/CH-MP PWM Configuration: Phase Shifted PWM Output",
@@ -34,11 +34,6 @@
             "versionRange":"*"
          }
       },
-      "peripherals":[
-         "GPIO",
-		 "PWM",
-         "Timer"
-      ],
       "keywords":[
          "dsc",
          "dspic",
