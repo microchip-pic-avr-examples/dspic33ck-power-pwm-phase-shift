@@ -1,4 +1,4 @@
-<config configVersion="1.1" device="dsPIC33CK256MP506" coreVersion="4.85.0">
+<config configVersion="1.1" device="dsPIC33CK256MP506" coreVersion="4.85.1">
    <usedClasses class="java.util.HashMap">
       <entry>
          <string>System Module</string>
@@ -13,12 +13,12 @@
          <string>class com.microchip.mcc.mcu16.systemManager.clk.Clock</string>
       </entry>
       <entry>
-         <string>Pin Module</string>
-         <string>class com.microchip.mcc.mcu16.pinManager.PinManager</string>
-      </entry>
-      <entry>
          <string>WATCHDOG</string>
          <string>class com.microchip.mcc.mcu16.systemManager.wdt.Wdt</string>
+      </entry>
+      <entry>
+         <string>Pin Module</string>
+         <string>class com.microchip.mcc.mcu16.pinManager.PinManager</string>
       </entry>
       <entry>
          <string>DMT</string>
@@ -13953,7 +13953,7 @@
       </entry>
       <entry>
          <file>mcc_generated_files\mcc.h</file>
-         <hash>da11287b3388692edf3d6f8bc0480caf872dee4057749d4c81df8faf03235ba1</hash>
+         <hash>829614197b747f6c720bd3301562e684ad254d6f74417c788fa916d1167995f1</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\reset.c</file>
@@ -13984,12 +13984,12 @@
          <hash>5a950eea332589ea6dc66ce9c8aaf27ccaaf2623159a9deaed042055e43c9477</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files\pin_manager.c</file>
-         <hash>7a64d50b1ff548dc0574f61ded05cb96c27256f7cee6a36fde3b11589b3d9b19</hash>
-      </entry>
-      <entry>
          <file>mcc_generated_files\system.h</file>
          <hash>0060fe1fb7298b89c45e013f472a9f4b996184788e2fd4462bf321204ae5163c</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files\pin_manager.c</file>
+         <hash>7a64d50b1ff548dc0574f61ded05cb96c27256f7cee6a36fde3b11589b3d9b19</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\system.c</file>
