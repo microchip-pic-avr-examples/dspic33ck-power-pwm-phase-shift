@@ -54,12 +54,13 @@
  * 
  * Description:
  * 
- *   This code example shows the basic configuration of two sychronized, phase shifted  
+ *   This code example shows the basic configuration of two synchronized, phase shifted  
  *   PWM generator channels. The initial phase shift between PWM generator 
  *   channel 1 and 3 after startup is set to 90 degrees.By pressing push button [USER], 
- *   the phase shift is stepped to 180 degrees. Bypressing [USER] again, the phase shift  
+ *   the phase shift is stepped to 180 degrees. By pressing [USER] again, the phase shift  
  *   switches back to 90 degrees.Both channels are configured in complementary output mode. 
- *   The frequency and duty ratio of two PWM channels will always remain to 200Khz and 50% respectively
+ *   The frequency and duty ratio of two PWM channels will always remain to 200 kHz and 
+ *   50% respectively
  * 
  * Please note:
  *   This code example can be run on dsPIC33CK as well as on dsPIC33CH
