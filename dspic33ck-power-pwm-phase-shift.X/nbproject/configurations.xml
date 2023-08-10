@@ -41,8 +41,6 @@
       <logicalFolder name="f2" displayName="common" projectFiles="true">
         <itemPath>sources/common/p33c_pwm.c</itemPath>
       </logicalFolder>
-      <logicalFolder name="f1" displayName="config" projectFiles="true">
-      </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
                      projectFiles="true">
