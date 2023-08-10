@@ -22,7 +22,7 @@
       },
 	  "configurator": {
          "name": "MCC",
-         "semverRange": ">=5.0.1"
+         "semverRange": ">=5.3.7"
       },
       "device":{
          "metaDataVersion":"1.0.0",
